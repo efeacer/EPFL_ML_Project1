@@ -158,3 +158,47 @@ def compute_gradient(tx, error_vector):
         gradient:
     """
     return - tx.T.dot(error_vector) / len(error_vector)
+
+def build_polynomial(x, degree):
+    """
+    Extends the feature matrix, x, by adding a polynomial basis of 
+    the given degree.
+
+    Args:
+        x: feature matrix
+        degree: degree of the polynomial basis
+
+    Returns:
+        augmented_x:
+    """
+    num_cols = x.shape[1] if len(x.shape) > 1 else 1
+    augmented_x = np.ones((len(x), 1))
+    for col in range(num_cols):
+        for degree in range(1, degree + 1):
+            if num_cols > 1:
+                augmented_x = np.c_[augmented_x, np.power(x[ :, col], degree)]
+            else:
+                augmented_x = np.c_[augmented_x, np.power(x, degree)]
+        if num_cols > 1 and col != num_cols - 1:
+            augmented_x = np.c_[augmented_x, np.ones((len(x), 1))]
+    return augmented_x
+
+def standardize(x, mean_x = None, std_x = None):
+    """
+    Standardize the original data set.
+
+    Args:
+        x: data set to standardize
+        mean_x: 
+        std_x:
+
+    Returns:
+        x:
+        mean_x:
+        std_x:
+    """
+    mean_x = mean_x or np.mean(x)
+    x = x - mean_x
+    std_x = std_x or np.std(x)
+    x = x / std_x
+    return x, mean_x, std_x
