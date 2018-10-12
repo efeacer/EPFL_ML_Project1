@@ -16,7 +16,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for _ in range(max_iters):
-        error_vector = compute_error_vector(y, w, tx)
+        error_vector = compute_error_vector(y, tx, w)
         gradient_vector = compute_gradient(tx, error_vector)
         w = w - gamma * gradient_vector
     final_error_vector = compute_error_vector(y, tx, w)
@@ -39,10 +39,11 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for _ in range(max_iters):
+        random_index = np.random.randint(len(y))
         # sample a random data point from y vector
-        y_random = y[np.random.randint(len(y))] 
+        y_random = y[random_index] 
         # sample a random row vector from tx matrix
-        tx_random = tx[np.random.randint(len(tx))] 
+        tx_random = tx[random_index] 
         error_vector = compute_error_vector(y_random, tx_random, w)
         stochastic_gradient_vector = compute_gradient(tx_random, error_vector)
         w = w - gamma * stochastic_gradient_vector
@@ -157,7 +158,7 @@ def compute_gradient(tx, error_vector):
     Returns:
         gradient:
     """
-    return - tx.T.dot(error_vector) / len(error_vector)
+    return - tx.T.dot(error_vector) / error_vector.size
 
 def build_polynomial(x, degree):
     """
@@ -202,3 +203,26 @@ def standardize(x, mean_x = None, std_x = None):
     std_x = std_x or np.std(x)
     x = x / std_x
     return x, mean_x, std_x
+
+def build_k_indices(y, k_fold, seed):
+    num_rows = y.shape[0]
+    interval = int(num_rows / k_fold)
+    np.random.seed(seed)
+    indices = np.random.permutation(num_rows)
+    k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
+    return np.array(k_indices)
+
+
+def compute_rmse(loss_mse): 
+    return np.sqrt(2 * loss_mse)
+    
+def cross_validation(y, x, k_indices, k, lambda_, degree):
+    y_test = y[k_indices[k]]
+    y_training = np.delete(y, k_indices[k])
+    x_test = x[k_indices[k]]
+    x_training = np.delete(x, k_indices[k], axis = 0)
+    augmented_x_test = build_polynomial(x_test, degree)
+    augmented_x_training = build_polynomial(x_training, degree)
+    w, loss_training = ridge_regression(y_training, augmented_x_training, lambda_)
+    loss_test = compute_mse(compute_error_vector(y_test, augmented_x_test, w))
+    return compute_rmse(loss_training), compute_rmse(loss_test)
