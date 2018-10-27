@@ -227,7 +227,7 @@ def report_prediction_accuracy_logistic(y, tx, w_best):
     since the prediction assumes that labels are between 0 and 1.
     Args:
         y: numpy array of labels for testing purpose
-        tx: numopy array of features in the learned data set
+        tx: numpy array of features in the learned data set
         w_best: the optimized weight vector of the model
     Returns:
         correct_percentage: the percentage of correct predictions of the model 
@@ -240,6 +240,47 @@ def report_prediction_accuracy_logistic(y, tx, w_best):
     print('Percentage of correct predictions is: %', correct_percentage * 100)
     return correct_percentage
 
+def train_test_split(y, tx, ratio, seed=1):
+    """
+    Splits a given training data set to a test set and a training set,
+    the sizes of the created sets are determined by the given ration.
+    Args:
+        y: numpy array of labels
+        tx: numpy array of features 
+        ratio: ratio of the created training set to the data set
+        seed: the random seed
+    Returns:
+        y_training: numpy array of labels of the seperated training set 
+        tx_training: numpy array of features of the seperated training set
+        y_test: numpy array of labels of the seperated test set
+        tx_test: numpy array of features of the seperated test set
+    """
+    np.random.seed(seed)
+    permutation = np.random.permutation(len(y))
+    shuffled_tx = tx[permutation]
+    shuffled_y = y[permutation]
+    split_position = int(len(y) * ratio)
+    tx_training, tx_test = shuffled_tx[ : split_position], shuffled_tx[split_position : ]
+    y_training, y_test = shuffled_y[ : split_position], shuffled_y[split_position : ]
+    return y_training, tx_training, y_test, tx_test, 
+
+def standardize(x, mean_x = None, std_x = None):
+    """
+    Standardizes the original data set.
+    Args:
+        x: data set to standardize
+        mean_x: mean of the data set, can be specified or computed
+        std_x: standard deviation of the data set, can be specified or computed
+    Returns:
+        x: standardized data set
+        mean_x: mean of the data set
+        std_x: standard deviation of the data set
+    """
+    mean_x = mean_x or np.mean(x)
+    x = x - mean_x
+    std_x = std_x or np.std(x)
+    x = x / std_x
+    return x, mean_x, std_x
 
 
 

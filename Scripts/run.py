@@ -7,7 +7,7 @@ from data_processing import process_data
 from data_processing import report_prediction_accuracy
 from data_processing import build_k_indices
 from data_processing import cross_validation
-from helper_functions import standardize
+from data_processing import standardize
 from helper_functions import build_polynomial
 from implementations import ridge_regression
 from proj1_helpers import load_csv_data

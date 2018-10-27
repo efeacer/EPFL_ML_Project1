@@ -57,24 +57,6 @@ def build_polynomial(x, degree):
             augmented_x = np.c_[augmented_x, np.ones((len(x), 1))]
     return augmented_x
 
-def standardize(x, mean_x = None, std_x = None):
-    """
-    Standardizes the original data set.
-    Args:
-        x: data set to standardize
-        mean_x: mean of the data set, can be specified or computed
-        std_x: standard deviation of the data set, can be specified or computed
-    Returns:
-        x: standardized data set
-        mean_x: mean of the data set
-        std_x: standard deviation of the data set
-    """
-    mean_x = mean_x or np.mean(x)
-    x = x - mean_x
-    std_x = std_x or np.std(x)
-    x = x / std_x
-    return x, mean_x, std_x
-
 def compute_rmse(loss_mse): 
     """
     Computes the root mean squared error.
