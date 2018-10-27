@@ -35,7 +35,7 @@ def predict_labels_logistic(weights, data):
     for logistic regression"""
     y_pred = np.dot(data, weights)
     y_pred[np.where(y_pred <= 0.5)] = -1
-    y_pred[np.where(y_pred > 0.5)] = 1
+    y_pred[np.where(y_pred > 0.5)] = 0
     return y_pred
 
 def create_csv_submission(ids, y_pred, name):

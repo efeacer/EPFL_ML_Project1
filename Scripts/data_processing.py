@@ -235,7 +235,7 @@ def report_prediction_accuracy_logistic(y, tx, w_best):
     """
     predictions = tx.dot(w_best)
     predictions[predictions > 0.5] = 1
-    predictions[predictions <= 0.5] = -1
+    predictions[predictions <= 0.5] = 0
     correct_percentage = np.sum(predictions == y) / float(len(predictions))
     print('Percentage of correct predictions is: %', correct_percentage * 100)
     return correct_percentage
@@ -276,11 +276,26 @@ def standardize(x, mean_x = None, std_x = None):
         mean_x: mean of the data set
         std_x: standard deviation of the data set
     """
-    mean_x = mean_x or np.mean(x)
+    mean_x = mean_x or np.mean(x, axis = 0)
     x = x - mean_x
-    std_x = std_x or np.std(x)
+    std_x = std_x or np.std(x, axis = 0)
     x = x / std_x
     return x, mean_x, std_x
+
+def change_labels_logistic(y):
+    """
+    The labels in logistic regression are interpreted as probabilities,
+    so this method transfers the labels to the range [0, 1]
+    Args:
+        y: given labels
+    Returns:
+        y_logistic: labels as probabilities
+    """
+    y[y == -1] = 0
+    return y
+    
+
+    
 
 
 
