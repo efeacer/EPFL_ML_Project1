@@ -1,0 +1,57 @@
+\documentclass[10pt,conference,compsocconf]{IEEEtran}
+
+\usepackage{hyperref}
+\usepackage{graphicx}	% For figure environment
+
+
+\begin{document}
+\title{Higgs Boson Classification Using Regression Techniques}
+
+\author{
+  Efe Acer, Murat Topak, Daniil Dimitriev\\
+  \textit{CS433 Machine Learning, EPFL}
+}
+
+\maketitle
+
+\begin{abstract}
+  Machine learning algorithms have become significant in various scientific fields due to the fact that they can make sense of complex, high dimensional data sets. Our work focuses on the application of such algorithms to overcome the problem of binary classification on CERN's Higgs Boson data set. This report proposes a procedure that uses specific regression techniques to work towards a solution to binary classification.
+\end{abstract}
+
+\section{Introduction}
+
+The Higgs Boson in simple terms is a highly unstable collection of very strong and weak charges, which are obtained immediately prior to high kinetic energy collisions of composite particles. These collisions generate a huge amount of data that is gathered in large data sets for further research, such a data set is the one we have worked on. Our data set is obtained from the measurements in the CERN ATLAS experiments. Even though, the measurements reflect laws of quantum physics, they involve background noise. Our aim is to process the raw measurement data to eliminate the background noise to some extend, and then apply particular regression techniques to construct an accurate classifier. The most suitable regression technique and the methods we used to process the raw data will establish our classification procedure.
+
+\section{Models and Methods}
+\label{sec:structure-paper}
+
+\subsection{Data Pre-processing}
+
+Pre-processing of raw data is highly beneficial for machine learning models to achieve better predictions. With pre-processing, prominent errors in the measurements can be cleared from the data set. In our exploratory data analysis, we had the following observations in order:
+
+\begin{enumerate}
+\item \verb|PRI_jet_num| \textit{is a discrete feature restricted with values 0, 1, 2 and 3} \smallskip
+\newline 
+Jets are pseudo particles that may appear in the detector when other particles collide. \verb|PRI_jet_num| is apparently a categorical variable denoting the number of jets appeared in an experiment. Other features in the data set include various measurements related to the angles between the jets and masses of the jets. Since such measurements have direct correlation with the number of jets, we split the raw data set into four data sets that are labeled with their corresponding jet number. \smallskip
+\item \textit{There are many zero variance features} \smallskip
+\newline
+After splitting the data sets, we observed that some features have zero variance, i.e. they have the same value regardless of the data point. These features are simply removed from the data set due to the fact that they are non informative. \smallskip
+\item \textit{There are many null values in the features} \smallskip
+\newline
+Besides the variance problem, we spotted many features with the \emph{null} value (-999). We replaced these missing values with the mean of the non \emph{null} values for the particular feature, with the hope of capturing the correct distribution.
+\end{enumerate}
+After these pre-processing procedures, we obtained four data sets labeled with the corresponding jet number, with no zero variance features and no \emph{null} values, both for training and testing.
+
+\subsection{Implementing Regression Techniques}
+\subsection{Feature Engineering}
+\subsection{Tuning Hyperparameters}
+
+\section{Results}
+\label{sec:tips-software}
+
+\section{Conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{literature}
+
+\end{document}
