@@ -159,7 +159,7 @@ def process_data(trainFile, testFile):
         create_csv('test_jet_' + str(jet_num) + '.csv', y_test_jet, tx_test_jet, ids_test_jet, header_test_jet, True)
         print('\n... created test_jet_' + str(jet_num) + '.csv file.')
         
-def report_prediction_accuracy(y, tx, w_best):
+def report_prediction_accuracy(y, tx, w_best, verbose = True):
     """
     Reports the percentage of correct predictions of a model that is applied
     on a set of labels.
@@ -175,7 +175,8 @@ def report_prediction_accuracy(y, tx, w_best):
     predictions[predictions >= 0] = 1
     predictions[predictions < 0] = -1
     correct_percentage = np.sum(predictions == y) / float(len(predictions))
-    print('Percentage of correct predictions is: %', correct_percentage * 100)
+    if verbose:
+        print('Percentage of correct predictions is: %', correct_percentage * 100)
     return correct_percentage
 
 def build_k_indices(y, k_fold, seed):
@@ -216,11 +217,11 @@ def cross_validation(y, augmented_tx, k_indices, k, lambda_, report_predictions 
     augmented_tx_training = np.delete(augmented_tx, k_indices[k], axis = 0)
     w, loss_training = ridge_regression(y_training, augmented_tx_training, lambda_)
     if report_predictions:
-        report_prediction_accuracy(y, augmented_tx, w)
+        report_prediction_accuracy(y_test, augmented_tx_test, w, report_predictions)
     loss_test = compute_mse(compute_error_vector(y_test, augmented_tx_test, w))
     return compute_rmse(loss_training), compute_rmse(loss_test)
 
-def report_prediction_accuracy_logistic(y, tx, w_best):
+def report_prediction_accuracy_logistic(y, tx, w_best, verbose = True):
     """
     Reports the percentage of correct predictions of a model that is applied
     on a set of labels. This method specifically works for logistic regression
@@ -237,7 +238,8 @@ def report_prediction_accuracy_logistic(y, tx, w_best):
     predictions[predictions > 0.5] = 1
     predictions[predictions <= 0.5] = 0
     correct_percentage = np.sum(predictions == y) / float(len(predictions))
-    print('Percentage of correct predictions is: %', correct_percentage * 100)
+    if verbose:
+        print('Percentage of correct predictions is: %', correct_percentage * 100)
     return correct_percentage
 
 def train_test_split(y, tx, ratio, seed=1):
@@ -276,11 +278,31 @@ def standardize(x, mean_x = None, std_x = None):
         mean_x: mean of the data set
         std_x: standard deviation of the data set
     """
-    mean_x = mean_x or np.mean(x, axis = 0)
+    if mean_x is None:
+        mean_x = np.mean(x, axis = 0)
     x = x - mean_x
-    std_x = std_x or np.std(x, axis = 0)
+    if std_x is None:
+        std_x = np.std(x, axis = 0)
     x = x / std_x
     return x, mean_x, std_x
+
+def min_max_normalization(x, min_of_x = None, max_of_x = None):
+    """
+    Normalizes the original data set using min max normalization.
+    Args:
+        x: data set to standardize
+        min_of_x: minimum values of features, can be specified or computed
+        max_of_x: maximum values of features, can be specified or computed
+    Returns:
+        x: min max normalized data set
+        min_of_x: minimum values of features
+        max_of_x: maximum values of features
+    """
+    if min_of_x is None:
+        min_of_x = np.min(x, axis = 0)
+    if max_of_x is None:
+        max_of_x = np.max(x, axis = 0)
+    return (x - (min_of_x)) / (max_of_x - min_of_x), min_of_x, max_of_x
 
 def change_labels_logistic(y):
     """
@@ -294,6 +316,7 @@ def change_labels_logistic(y):
     y[y == -1] = 0
     return y
     
+
 
     
 

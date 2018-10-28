@@ -23,8 +23,8 @@ def main():
     """
     y, tx, _ = load_csv_data('train.csv') 
     y_train, tx_train, y_test, tx_test = train_test_split(y, tx, 0.8)
-    standardized_tx_train, _, _= standardize(tx_train)
-    standardized_tx_test, _, _ = standardize(tx_test)
+    standardized_tx_train, mean_tx_train, std_tx_train = standardize(tx_train)
+    standardized_tx_test, _, _ = standardize(tx_test, mean_tx_train, std_tx_train)
     test_least_squares_GD(y_train, standardized_tx_train, y_test, standardized_tx_test)
     test_least_squares_SGD(y_train, standardized_tx_train, y_test, standardized_tx_test)
     test_least_squares(y_train, tx_train, y_test, tx_test)
@@ -120,7 +120,7 @@ def test_reg_logistic_regression(y_train, tx_train, y_test, tx_test):
         tx_test: test features after the splitting
     """
     print('\nTesting reg_logistic_regression...')
-    w, _ = reg_logistic_regression(y_train, tx_train, 1, np.zeros(tx_train.shape[1]), 3000, 1e-06)
+    w, _ = reg_logistic_regression(y_train, tx_train, 0.1, np.zeros(tx_train.shape[1]), 3000, 1e-06)
     report_prediction_accuracy_logistic(y_test, tx_test, w)
     print('... testing completed.')
 

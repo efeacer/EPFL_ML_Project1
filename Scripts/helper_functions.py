@@ -119,3 +119,82 @@ def penalized_logistic_regression(y, tx, w, lambda_):
     loss = compute_logistic_loss(y, tx, w) + (lambda_ / 2) * w.T.dot(w)
     gradient = compute_logistic_gradient(y, tx, w) + lambda_ * w
     return loss, gradient
+
+def cross_terms(x, x_initial):
+    """
+    Adds the multiplication of different features as new features.
+    Args:
+        x: the given feature matrix
+        x_initial: the features whose multiplications will be added
+    Returns:
+        x_cross_terms: feature matrix with cross terms
+    """
+    for col1 in range(x_initial.shape[1]):
+        for col2 in np.arange(col1 + 1, x_initial.shape[1]):
+            if col1 != col2:
+                x = np.c_[x, x_initial[:, col1] * x_initial[:, col2]]
+    return x
+
+def log_terms(x, x_initial):
+    """
+    Adds the logarithms of features as new features.
+    Args:
+        x: the given feature matrix
+        x_initial: the features whose logarithms will be added
+    Returns:
+        x_log_terms: feature matrix with logarithms
+    """
+    for col in range(x_initial.shape[1]):
+        current_col = x_initial[:, col]
+        current_col[current_col <= 0] = 1
+        x = np.c_[x, np.log(current_col)]
+    return x
+
+def sqrt_terms(x, x_initial):
+    """
+    Adds the square roots of features as new features.
+    Args:
+        x: the given feature matrix
+        x_initial: the features whose square roots will be added
+    Returns:
+        x_sqrt_terms: feature matrix with square roots
+    """
+    for col in range(x_initial.shape[1]):
+        current_col = np.abs(x_initial[:, col])
+        x = np.c_[x, np.sqrt(current_col)]
+    return x
+
+def apply_trigonometry(x, x_initial):
+    """
+    Adds the sin and cos of features as new features.
+    Args:
+        x: the given feature matrix
+        x_initial: the features whose sin and cos will be added
+    Returns:
+        x_sqrt_terms: feature matrix with sine values
+    """
+    for col in range(x_initial.shape[1]):
+        x = np.c_[x, np.sin(x_initial[:, col])]
+        x = np.c_[x, np.cos(x_initial[:, col])]
+    return x
+
+def feature_engineering(x, degree, has_angles = False):
+    """
+    Builds a polynomial with the given degree from the initial features,
+    add the cross terms, logarithms and square roots of the initial features
+    as new features. Also includes the sine of features as an option.
+    Args:
+        x: features
+        degree: degree of the polynomial basis
+        has_angles: Boolean value to determine including sin and cos of features
+    Returns:
+        x_engineered: engineered features
+    """
+    x_initial = x
+    x = build_polynomial(x, degree)
+    x = cross_terms(x, x_initial)
+    x = log_terms(x, x_initial)
+    x = sqrt_terms(x, x_initial)
+    if has_angles:
+        x = apply_trigonometry(x, x_initial)
+    return x
