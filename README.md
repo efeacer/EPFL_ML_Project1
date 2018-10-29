@@ -9,7 +9,7 @@ well documented.
 
 ## Results on Kaggle
 
-* Kaggle competition link: https://www.kaggle.com/c/epfml18-higgs
+* Kaggle competition link: https://www.kaggle.com/c/epfml18-higgs (data sets can be found here)
 
 * Public leaderboard (Group name: THREE COMMA CLUB)
   - **83.639%** of correct predictions.
@@ -26,5 +26,5 @@ well documented.
 Please don't hesitate to contact the authors about any questions about the project or 
 machine learning in general:
 - Efe Acer: efeacer@gmail.com
-- Murat Topak
-- Daniil Dmitriev
+- Murat Topak: murattopak01@gmail.com
+- Daniil Dmitriev: dmitrievdaniil97@gmail.com
