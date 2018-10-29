@@ -11,8 +11,12 @@ well documented.
 
 * Kaggle competition link: https://www.kaggle.com/c/epfml18-higgs (data sets can be found here)
 
-* Public leaderboard (Group name: THREE COMMA CLUB)
+* Group name: THREE COMMA CLUB
+
+* Public leaderboard 
   - **83.639%** of correct predictions.
+* Private leaderboard 
+  - **83.511%** of correct predictions.
 
 ## Folders and Files
 
