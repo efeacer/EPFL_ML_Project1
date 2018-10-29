@@ -20,7 +20,7 @@ Steps to obtain our best prediction result on the Kaggle platform:
 			coded hyperparameters (intended use for testing)
 			
 			ii) python run.py -pd -gs -> to process and create data sets, tune the hyperparameters
-			with a grid search with cross validation and then train the model (needs some time)
+			with a grid search with cross validation and then train the model (takes some time)
 			
 			Note: You can omit the '-pd' option after the processed data sets are created in  this
 			(Scripts) folder. You should not omit this option in the very first execution, otherwise
