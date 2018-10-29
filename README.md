@@ -16,7 +16,7 @@ well documented.
 
 ## Folders and Files
 
-- `Scripts`: Many different tests done during the competition
+- `Scripts`: python code that established our machine learning procedure
 - `report.pdf`: project report explaining our machine learning procedure in .pdf format
 - `project1_description.pdf`: assignment description given by EPFL
 
