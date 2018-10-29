@@ -1,4 +1,4 @@
-Group E_M_D (Efe Acer, Murat Topak, Daniil Dimitriev)
+Group: THREE COMMA CLUB (Efe Acer, Murat Topak, Daniil Dmitriev)
 
 Steps to obtain our best prediction result on the Kaggle platform:
 	
@@ -16,17 +16,17 @@ Steps to obtain our best prediction result on the Kaggle platform:
 		
 		b) to execute 'run.py' type:
 			
-			i) python run.py -dp -> to process and create data sets and train the model using hard 
+			i) python run.py -pd -> to process and create data sets and train the model using hard 
 			coded hyperparameters
 			
-			ii) python run.py -dp -gs -> to process and create data sets, tune the hyperparameters
+			ii) python run.py -pd -gs -> to process and create data sets, tune the hyperparameters
 			with a grid search with cross validation and then train the model
 			
-			Note: You can omit the '-dp' option after the processed data sets are created in  this
+			Note: You can omit the '-pd' option after the processed data sets are created in  this
 			(Scripts) folder. You should not omit this option in the very first execution, otherwise
 			the program will not find the processed data sets and crash.
 			
-	After running the program a file called 'Submit_E_M_D_Best' will be present in this (Scripts)
+	After running the program a file called 'Submit_E_M_D_best' will be present in this (Scripts)
 	folder, which is indeed our best submission.
 	
 	You can find implementations of the six mandatory algorithms in the 'implementations.py' file,

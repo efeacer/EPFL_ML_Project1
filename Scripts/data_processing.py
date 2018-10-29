@@ -45,7 +45,8 @@ def analyse(tx):
     Analyses a given set of features. Marks the features with zero
     variance as the features to be deleted from the data set. Replaces
     each instance of a null(-999) valued feature point with the mean 
-    of the non null valued feature points.
+    of the non null valued feature points. Also handles the outliers
+    by clipping the very large and very small features.
     Args: 
         tx: the numpy array representing the given set of features
     Returns:
@@ -62,8 +63,15 @@ def analyse(tx):
             print('The column with index ', col, ' is all the same, it will be deleted.')
             columns_to_remove.append(col)
         else:
-            current_col[current_col == -999] = np.mean(current_col[current_col != -999])
-            print('null values in the ', col, ' indexed column are replaced with the mean.')
+            current_col[current_col == -999] = np.median(current_col[current_col != -999])
+            # Handling the outliers
+            std_current_col = np.std(current_col)
+            mean_current_col = np.mean(current_col)
+            lower_bound = mean_current_col - 2 * std_current_col
+            upper_bound = mean_current_col + 2 * std_current_col
+            current_col[current_col < lower_bound] = lower_bound
+            current_col[current_col > upper_bound] = upper_bound
+            print('null values in the ', col, ' indexed column are replaced with the mean and outliers are handled.')
     return columns_to_remove
 
 def remove_columns(tx, header, columns_to_remove):
@@ -208,18 +216,17 @@ def cross_validation(y, augmented_tx, k_indices, k, lambda_, report_predictions 
     Returns:
         rmse_training: numeric value of the root mean squared error loss
             for the training set
-        rmse_test: numeric value of the root mean squared error loss
-            for the test set
+        pred: correct prediction percentage for the test set
     """
     y_test = y[k_indices[k]]
     y_training = np.delete(y, k_indices[k])
     augmented_tx_test = augmented_tx[k_indices[k]]
     augmented_tx_training = np.delete(augmented_tx, k_indices[k], axis = 0)
     w, loss_training = ridge_regression(y_training, augmented_tx_training, lambda_)
-    if report_predictions:
-        report_prediction_accuracy(y_test, augmented_tx_test, w, report_predictions)
-    loss_test = compute_mse(compute_error_vector(y_test, augmented_tx_test, w))
-    return compute_rmse(loss_training), compute_rmse(loss_test)
+    pred = report_prediction_accuracy(y_test, augmented_tx_test, w, False)
+    # instead of test rmse, return correct prediction percentage (it works better)
+    #loss_test = compute_mse(compute_error_vector(y_test, augmented_tx_test, w))
+    return compute_rmse(loss_training), pred #compute_rmse(loss_test)
 
 def report_prediction_accuracy_logistic(y, tx, w_best, verbose = True):
     """
