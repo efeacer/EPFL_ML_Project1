@@ -35,3 +35,5 @@ Steps to obtain our best prediction result on the Kaggle platform:
 	the Scripts folder together with 'proj1_helpers.py' that was already provided in the project skeleton.
 	You will also see a file called 'test_implementations.py' that is used to test the six mandatory 
 	algorithms and provide data for our report.
+	
+	(python --version -> Python 3.6.5 :: Anaconda, Inc.)
