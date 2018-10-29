@@ -2,7 +2,7 @@
 
 ## Higgs Boson Classification Using Regression Techniques
 
-First project of the EPFL Machine Learning course. Aims to solve the Higgs Boson classification 
+First project of the EPFL Machine Learning course, which aims to solve the Higgs Boson classification 
 problem (https://www.kaggle.com/c/higgs-boson) using regression techniques. The given report 
 explains our machine learning procedure in detail and the python code in the Scripts folder is 
 well documented.
