@@ -32,3 +32,9 @@ machine learning in general:
 - Efe Acer: efeacer@gmail.com
 - Murat Topak: murattopak01@gmail.com
 - Daniil Dmitriev: dmitrievdaniil97@gmail.com
+
+## License and Copyright
+
+Licensed under the [MIT License](LICENSE)
+
+© Efe Acer
