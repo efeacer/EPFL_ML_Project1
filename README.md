@@ -37,4 +37,4 @@ machine learning in general:
 
 Licensed under the [MIT License](LICENSE)
 
-© Efe Acer
+© 2018 Efe Acer
